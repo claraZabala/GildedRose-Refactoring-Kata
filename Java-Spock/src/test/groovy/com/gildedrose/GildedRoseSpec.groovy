@@ -16,7 +16,7 @@ class GildedRoseSpec extends Specification {
         GildedRose app = new GildedRose(items);
 
         when: "updating quality"
-        app.updateQuality();
+        app.updateQualityAndSellIn();
 
         then: "the quality is correct"
         app.items[0].name == "fixme"

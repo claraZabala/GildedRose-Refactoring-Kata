@@ -23,7 +23,7 @@ object TexttestFixture {
         System.out.println(item.name + ", " + item.sellIn + ", " + item.quality)
       }
       System.out.println()
-      app.updateQuality()
+      app.updateQualityAndSellIn()
     }
   }
 }

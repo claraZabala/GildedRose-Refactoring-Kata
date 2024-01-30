@@ -4,44 +4,60 @@ class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+    public static final String CONJURED = "Conjured Mana Cake";
     Item[] items;
 
     public GildedRose(Item[] items) {
         this.items = items;
     }
 
-    public void updateQuality() {
+    public void updateQualityAndSellIn() {
         for (Item item : items) {
-            if (item.name.equals(AGED_BRIE) || item.name.equals(BACKSTAGE_PASSES)) {
-                increaseQuality(item);
-            } else {
-                lowerQuality(item);
+            switch (item.name) {
+                case AGED_BRIE:
+                    item.quality++;
+                    break;
+                case BACKSTAGE_PASSES:
+                    increaseBackstageQuality(item);
+                    break;
+                case SULFURAS:
+                    break;
+                case CONJURED:
+                    item.quality -= 2;
+                    break;
+                default:
+                    item.quality--;
             }
 
-            lowerSellInDays(item);
+            updateSellInAndQualityPassedSellIn(item);
 
+            validateQuality(item);
+        }
+    }
+
+    private static void updateSellInAndQualityPassedSellIn(Item item) {
+        lowerSellInDays(item);
+        if (item.sellIn < 0) {
             updateQualityPassedSellDate(item);
         }
     }
 
-    private static void increaseQuality(Item item) {
-        if (item.quality < 50) {
-            item.quality++;
+    private static void validateQuality(Item item) {
+        if (item.quality > 50) {
+            item.quality = 50;
         }
-        if (item.name.equals(BACKSTAGE_PASSES)) {
-            if (item.sellIn < 11 && item.quality < 50) {
-                item.quality++;
-            }
-
-            if (item.sellIn < 6 && item.quality < 50) {
-                item.quality++;
-            }
+        if (item.quality < 0) {
+            item.quality = 0;
         }
     }
 
-    private static void lowerQuality(Item item) {
-        if (item.quality > 0 && !item.name.equals(SULFURAS)) {
-            item.quality--;
+    private static void increaseBackstageQuality(Item item) {
+        if (item.sellIn > 5 && item.sellIn <= 10) {
+            item.quality += 2;
+        }
+
+        if (item.sellIn <= 5) {
+            item.quality += 3;
         }
     }
 
@@ -52,20 +68,20 @@ class GildedRose {
     }
 
     private static void updateQualityPassedSellDate(Item item) {
-        if (item.sellIn < 0) {
-            if (item.name.equals(AGED_BRIE)) {
-                if (item.quality < 50) {
-                    item.quality++;
-                }
-            } else {
-                if (!item.name.equals(BACKSTAGE_PASSES)) {
-                    if (item.quality > 0 && !item.name.equals(SULFURAS)) {
-                        item.quality--;
-                    }
-                } else {
-                    item.quality = 0;
-                }
-            }
+        switch (item.name) {
+            case AGED_BRIE:
+                item.quality++;
+                break;
+            case BACKSTAGE_PASSES:
+                item.quality = 0;
+                break;
+            case SULFURAS:
+                break;
+            case CONJURED:
+                item.quality -= 2;
+                break;
+            default:
+                item.quality--;
         }
     }
 }

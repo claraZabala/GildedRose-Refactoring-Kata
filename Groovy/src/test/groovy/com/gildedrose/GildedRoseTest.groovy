@@ -8,7 +8,7 @@ class GildedRoseTest {
     void "foo"() {
         def items = [ new Item("foo", 0, 0) ] as Item[]
         def app = new GildedRose(items)
-        app.updateQuality()
+        app.updateQualityAndSellIn()
         assert "fixme" == app.items[0].name
     }
 

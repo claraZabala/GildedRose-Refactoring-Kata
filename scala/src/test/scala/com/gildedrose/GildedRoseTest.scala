@@ -7,7 +7,7 @@ class GildedRoseTest  extends AnyFlatSpec with Matchers {
       it should "foo" in {
         val items = Array[Item](new Item("foo", 0, 0))
         val app = new GildedRose(items)
-        app.updateQuality()
+        app.updateQualityAndSellIn()
         app.items(0).name should equal ("fixme")
       }
 }

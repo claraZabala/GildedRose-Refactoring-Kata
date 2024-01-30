@@ -28,5 +28,5 @@ for (int i = 0; i < days; i++) {
         println(item)
     }
     println ""
-    app.updateQuality()
+    app.updateQualityAndSellIn()
 }
